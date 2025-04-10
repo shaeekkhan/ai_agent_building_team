@@ -1,4 +1,6 @@
+import os
 import subprocess
+import sys
 from agent_manager import generate_agents
 from session_manager import save_agents_to_file, list_sessions
 
@@ -43,8 +45,11 @@ def upload_agents(session_file=None):
         session_file = f"sessions/{sessions[session_choice]}"
 
     print(f"Uploading agents from session: {session_file}")
-    subprocess.run(["python", "-V"])
-    subprocess.run(["python", "agent_creation_automation.py", session_file])
+    venv_python = os.path.join(".venv", "Scripts", "python.exe")  # Windows
+    # venv_python = os.path.join(".venv", "bin", "python")  # macOS/Linux
+
+    print(f"Using Python: {venv_python}")  # Debugging statement
+    subprocess.run([venv_python, "agent_creation_automation.py", session_file])
 
 
 if __name__ == "__main__":
