@@ -1,14 +1,6 @@
+import subprocess
 from agent_manager import generate_agents
-from session_manager import save_agents_to_file, load_agents_from_file, list_sessions
-from api import app
-
-
-def print_agents(agents):
-    for i, agent in enumerate(agents, 1):
-        print(f"\nAgent {i}:")
-        print(f"Name: {agent.get('name', 'N/A')}")
-        print(f"Instructions: {agent.get('instructions', 'N/A')}")
-        print(f"Description: {agent.get('description', 'N/A')}")
+from session_manager import save_agents_to_file, list_sessions
 
 
 def create_new_agents():
@@ -23,30 +15,36 @@ def create_new_agents():
     if tasks:
         print("\nGenerating agents...")
         agents = generate_agents(tasks)
-        print("\nGenerated Agents:")
-        print_agents(agents)
         saved_file = save_agents_to_file(agents)
         print(f"\nAgents data saved to: {saved_file}")
+
+        # Ask user to select session file for upload immediately after creation
+        upload_agents(saved_file)
     else:
         print("No tasks provided. Exiting.")
 
 
-def load_previous_session():
-    sessions = list_sessions()
-    if not sessions:
-        print("No saved sessions found.")
-        return
+def upload_agents(session_file=None):
+    if not session_file:
+        sessions = list_sessions()
+        if not sessions:
+            print("No saved sessions found. Exiting.")
+            return
 
-    print("Available sessions:")
-    for i, session in enumerate(sessions, 1):
-        print(f"{i}. {session}")
-    session_choice = int(input("Enter the number of the session to load: ")) - 1
-    if 0 <= session_choice < len(sessions):
-        loaded_agents = load_agents_from_file(f"sessions/{sessions[session_choice]}")
-        print("\nLoaded Agents:")
-        print_agents(loaded_agents)
-    else:
-        print("Invalid session number.")
+        print("Available sessions:")
+        for i, session in enumerate(sessions, 1):
+            print(f"{i}. {session}")
+
+        session_choice = int(input("Enter the number of the session to upload from: ")) - 1
+        if session_choice < 0 or session_choice >= len(sessions):
+            print("Invalid choice. Exiting.")
+            return
+
+        session_file = f"sessions/{sessions[session_choice]}"
+
+    print(f"Uploading agents from session: {session_file}")
+    subprocess.run(["python", "-V"])
+    subprocess.run(["python", "agent_creation_automation.py", session_file])
 
 
 if __name__ == "__main__":
@@ -57,9 +55,6 @@ if __name__ == "__main__":
     if choice == '1':
         create_new_agents()
     elif choice == '2':
-        load_previous_session()
+        upload_agents()
     else:
         print("Invalid choice. Exiting.")
-
-    # Uncomment the following line to run the Flask app
-    # app.run(debug=True, use_reloader=False)
