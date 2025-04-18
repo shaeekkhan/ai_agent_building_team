@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Load Previous Session</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Select a session</h2>
+    {% if sessions %}
+      <ul>
+      {% for session in sessions %}
+        <li class="card">
+          {{ session }}
+          <a href="/view_session/{{ session }}">View</a> |
+          <a href="/download/{{ session }}">Download</a> |
+          <a href="/deploy/{{ session }}"><button>Deploy</button></a>
+        </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p>No session files found.</p>
+    {% endif %}
+    <a href="/">Back to Home</a>
+  </div>
+</body>
+</html>

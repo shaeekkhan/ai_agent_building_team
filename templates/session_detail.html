@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session Details - {{ session_filename }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Session: {{ session_filename }}</h2>
+    <ul>
+    {% for agent in agents %}
+      <li class="card">
+        <b>Name:</b> {{ agent["name"] }} <br>
+        <b>Description:</b> {{ agent["description"] }} <br>
+        <b>Instructions:</b> {{ agent["instructions"] }} <br>
+      </li>
+    {% endfor %}
+    </ul>
+    <a href="/download/{{ session_filename }}">Download JSON</a><br>
+    <a href="/deploy/{{ session_filename }}"><button>Deploy Agents</button></a><br><br>
+    <a href="/load_session/">Back to Sessions</a> |
+    <a href="/">Home</a>
+  </div>
+</body>
+</html>

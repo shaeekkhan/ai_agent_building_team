@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agent Creation Results</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Agents Created:</h2>
+    <ul>
+    {% for agent in agents %}
+      <li class="card">
+        <b>Name:</b> {{ agent["name"] }} <br>
+        <b>Description:</b> {{ agent["description"] }} <br>
+        <b>Instructions:</b> {{ agent["instructions"] }} <br>
+      </li>
+    {% endfor %}
+    </ul>
+    <a href="/download/{{ session_filename }}">Download Session JSON</a><br><br>
+    <a href="/deploy/{{ session_filename }}"><button>Deploy Agents</button></a><br><br>
+    <a href="/">Create More Agents</a>
+  </div>
+</body>
+</html>
